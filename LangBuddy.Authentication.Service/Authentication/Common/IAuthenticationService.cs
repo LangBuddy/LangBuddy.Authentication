@@ -5,5 +5,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Common
     public interface IAuthenticationService
     {
         Task<HttpContent> Register(AuthRegisterRequest authCreateRequest);
+
+        Task<string> Authenticate(AuthLoginRequest authLoginRequest);
     }
 }
