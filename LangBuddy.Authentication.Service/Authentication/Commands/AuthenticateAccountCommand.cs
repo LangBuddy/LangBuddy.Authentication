@@ -31,7 +31,8 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
                 throw new Exception("Password Incorrect");
             }
 
-            var token = _createJwtTokenCommand.Invoke(authLoginRequest.Email, passwordHash.PasswordHash.ToString());
+            var token = _createJwtTokenCommand.Invoke(authLoginRequest.Email,
+                System.Text.Encoding.UTF8.GetString(passwordHash.PasswordHash));
 
             return token;
         }
