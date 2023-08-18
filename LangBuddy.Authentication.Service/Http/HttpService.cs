@@ -1,8 +1,10 @@
-﻿using LangBuddy.Authentication.Models.Options;
+﻿using LangBuddy.Authentication.Models.Dto;
 using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Service.Http.Common;
+using LangBuddy.Authentication.Service.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace LangBuddy.Authentication.Service.Http
@@ -20,7 +22,7 @@ namespace LangBuddy.Authentication.Service.Http
 
         public async Task<HttpContent> SendCreateAccountRequest(AccountCreateRequest accountCreateRequest)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, _apiConnections.AccountsConnection);
+            var request = new HttpRequestMessage(HttpMethod.Post, _apiConnections.AccountsConnectionDefault);
 
             request.Content = new StringContent(
                 JsonConvert.SerializeObject(accountCreateRequest), Encoding.UTF8, "application/json"
@@ -29,6 +31,23 @@ namespace LangBuddy.Authentication.Service.Http
             var response = await _httpClient.SendAsync(request);
 
             return response.Content;
+        }
+
+        public async Task<AccountPasswordHashDto?> SendGetAccountPasswordHashRequest(string email)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, 
+                $"{_apiConnections.AccountsConnectionDefaultPasswordHash}/{email}"    
+            );
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<AccountPasswordHashDto>();
+                return content;
+            }
+
+            throw new Exception($"Error when receiving the password hash for email {email}. Error code: {response.StatusCode}");
         }
     }
 }
