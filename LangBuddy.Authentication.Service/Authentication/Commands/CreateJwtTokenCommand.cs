@@ -1,5 +1,6 @@
 ﻿using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,12 +11,12 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
     {
         private readonly JwtConfiguration _jwtConfiguration;
 
-        public CreateJwtTokenCommand(JwtConfiguration jwtConfiguration)
+        public CreateJwtTokenCommand(IOptions<JwtConfiguration> jwtConfiguration)
         {
-            _jwtConfiguration = jwtConfiguration;
+            _jwtConfiguration = jwtConfiguration.Value;
         }
 
-        public string Invoke(string accountLogin, string pasHash)
+        public string Invoke(string accountEmail, string pasHash)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -24,7 +25,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
                 Audience = _jwtConfiguration.AUDIENCE,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Name, accountLogin),
+                new Claim(ClaimTypes.Email, accountEmail),
                 new Claim(ClaimTypes.Hash, pasHash)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),

@@ -2,6 +2,6 @@
 {
     public interface ICreateJwtTokenCommand
     {
-        string Invoke(string accountLogin, string pasHash);
+        string Invoke(string accountEmail, string pasHash);
     }
 }
