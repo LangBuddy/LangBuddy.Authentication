@@ -12,10 +12,9 @@ namespace LangBuddy.Authentication.Service.Http
         private readonly HttpClient _httpClient;
         private readonly ApiConnections _apiConnections;
 
-        public HttpService(HttpClient httpClient, 
-            IOptions<ApiConnections> apiConnections)
+        public HttpService(IOptions<ApiConnections> apiConnections)
         {
-            _httpClient = httpClient;
+            _httpClient = new HttpClient();
             _apiConnections = apiConnections.Value;
         }
 
