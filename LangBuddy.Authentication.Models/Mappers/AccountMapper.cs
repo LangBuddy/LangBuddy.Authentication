@@ -10,9 +10,8 @@ namespace LangBuddy.Authentication.Models.Mappers
 {
     public static class AccountMapper
     {
-        public static AccountCreateRequest ToAccountCreateRequest(this AuthCreateRequest request)
+        public static AccountCreateRequest ToAccountCreateRequest(this AuthRegisterRequest request)
         {
-            var req = request.Adapt<AccountCreateRequest>();
             return request.Adapt<AccountCreateRequest>();
         }
     }

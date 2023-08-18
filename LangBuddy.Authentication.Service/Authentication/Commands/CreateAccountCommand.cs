@@ -16,7 +16,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
             _createPasswordHashCommand = createPasswordHashCommand;
             _httpService = httpService;
         }
-        public async Task<HttpContent> Invoke(AuthCreateRequest authCreateRequest)
+        public async Task<HttpContent> Invoke(AuthRegisterRequest authCreateRequest)
         {
             byte[] passwordHash, passwordSalt;
             _createPasswordHashCommand.Invoke(authCreateRequest.Password, out passwordHash, out passwordSalt);

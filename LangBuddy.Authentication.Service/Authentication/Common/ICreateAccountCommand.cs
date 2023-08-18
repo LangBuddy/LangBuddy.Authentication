@@ -4,6 +4,6 @@ namespace LangBuddy.Authentication.Service.Authentication.Common
 {
     public interface ICreateAccountCommand
     {
-        Task<HttpContent> Invoke(AuthCreateRequest authCreateRequest);
+        Task<HttpContent> Invoke(AuthRegisterRequest authCreateRequest);
     }
 }

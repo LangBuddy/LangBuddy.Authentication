@@ -12,7 +12,7 @@ namespace LangBuddy.Authentication.Service.Authentication
             _createAccountCommand = createAccountCommand;
         }
 
-        public async Task<HttpContent> Register(AuthCreateRequest authCreateRequest)
+        public async Task<HttpContent> Register(AuthRegisterRequest authCreateRequest)
         {
             return await _createAccountCommand.Invoke(authCreateRequest);
         }

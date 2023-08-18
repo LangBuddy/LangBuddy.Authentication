@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LangBuddy.Authentication.Models.Request
 {
-    public record AuthCreateRequest(
+    public record AuthRegisterRequest(
         string Email, string Nickname, string Password    
     );
 }
