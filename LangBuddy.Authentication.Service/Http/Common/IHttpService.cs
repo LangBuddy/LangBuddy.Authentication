@@ -1,5 +1,5 @@
-﻿using LangBuddy.Authentication.Models.Dto;
-using LangBuddy.Authentication.Models.Request;
+﻿using LangBuddy.Authentication.Models.Request;
+using LangBuddy.Authentication.Models.Response;
 
 namespace LangBuddy.Authentication.Service.Http.Common
 {
@@ -7,6 +7,6 @@ namespace LangBuddy.Authentication.Service.Http.Common
     {
         Task<HttpContent> SendCreateAccountRequest(AccountCreateRequest accountCreateRequest);
 
-        Task<AccountPasswordHashDto?> SendGetAccountPasswordHashRequest(string email);
+        Task<AccountPasswordHashResponse?> SendGetAccountPasswordHashRequest(string email);
     }
 }

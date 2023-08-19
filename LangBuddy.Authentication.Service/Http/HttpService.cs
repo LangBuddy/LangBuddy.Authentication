@@ -1,5 +1,5 @@
-﻿using LangBuddy.Authentication.Models.Dto;
-using LangBuddy.Authentication.Models.Request;
+﻿using LangBuddy.Authentication.Models.Request;
+using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Service.Http.Common;
 using LangBuddy.Authentication.Service.Options;
 using Microsoft.Extensions.Options;
@@ -33,7 +33,7 @@ namespace LangBuddy.Authentication.Service.Http
             return response.Content;
         }
 
-        public async Task<AccountPasswordHashDto?> SendGetAccountPasswordHashRequest(string email)
+        public async Task<AccountPasswordHashResponse?> SendGetAccountPasswordHashRequest(string email)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
                 $"{_apiConnections.AccountsConnectionDefaultPasswordHash}/{email}"    
@@ -43,7 +43,7 @@ namespace LangBuddy.Authentication.Service.Http
 
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadFromJsonAsync<AccountPasswordHashDto>();
+                var content = await response.Content.ReadFromJsonAsync<AccountPasswordHashResponse>();
                 return content;
             }
 
