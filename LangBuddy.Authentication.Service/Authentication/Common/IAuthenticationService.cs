@@ -8,5 +8,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Common
         Task<HttpContent> Register(AuthRegisterRequest authCreateRequest);
 
         Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest);
+
+        Task<AuthenticatedResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email);
     }
 }
