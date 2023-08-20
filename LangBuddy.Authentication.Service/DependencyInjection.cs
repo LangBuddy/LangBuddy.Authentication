@@ -1,4 +1,5 @@
-﻿using LangBuddy.Authentication.Service.Authentication;
+﻿using LangBuddy.Authentication.Database;
+using LangBuddy.Authentication.Service.Authentication;
 using LangBuddy.Authentication.Service.Authentication.Commands;
 using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Http;
@@ -12,10 +13,12 @@ namespace LangBuddy.Authentication.Service
     {
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDatabase(configuration);
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<ICreatePasswordHashCommand, CreatePasswordHashCommand>();
             services.AddTransient<IVerifyPasswordHashCommand, VerifyPasswordHashCommand>();
             services.AddTransient<ICreateJwtTokenCommand, CreateJwtTokenCommand>();
+            services.AddTransient<ICreateRefreshTokenCommand, CreateRefreshTokenCommand>();
             services.AddTransient<ICreateAccountCommand, CreateAccountCommand>();
             services.AddTransient<IAuthenticateAccountCommand, AuthenticateAccountCommand>();
 
