@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LangBuddy.Authentication.Database\LangBuddy.Authentication.Database.csproj" />
     <ProjectReference Include="..\LangBuddy.Authentication.Models\LangBuddy.Authentication.Models.csproj" />
   </ItemGroup>
 
