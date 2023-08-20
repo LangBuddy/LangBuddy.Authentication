@@ -3,6 +3,7 @@ using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Http.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace LangBuddy.Authentication.Service.Authentication.Commands
 {
@@ -44,14 +45,26 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
 
             var refresh = _createRefreshTokenCommand.Invoke();
 
-            var auth = new Database.Entity.Authentication()
-            {
-                Email = authLoginRequest.Email,
-                RefreshToken = refresh,
-                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7),
-            };
+            var auth = await _authenticationDbContext.Authentications
+                .FirstOrDefaultAsync(x => x.Email == authLoginRequest.Email);
 
-            await _authenticationDbContext.Authentications.AddAsync(auth);
+            if(auth is null)
+            {
+                auth = new Database.Entity.Authentication()
+                {
+                    Email = authLoginRequest.Email,
+                    RefreshToken = refresh,
+                    RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7),
+                };
+
+                await _authenticationDbContext.Authentications.AddAsync(auth);
+            }
+            else
+            {
+                auth.RefreshToken = refresh;
+                auth.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            }
+
             await _authenticationDbContext.SaveChangesAsync();
 
             return new AuthenticatedResponse(token, refresh);
