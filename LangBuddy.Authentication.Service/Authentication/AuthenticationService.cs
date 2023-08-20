@@ -1,4 +1,5 @@
 ﻿using LangBuddy.Authentication.Models.Request;
+using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Service.Authentication.Common;
 
 namespace LangBuddy.Authentication.Service.Authentication
@@ -20,7 +21,7 @@ namespace LangBuddy.Authentication.Service.Authentication
             return await _createAccountCommand.Invoke(authCreateRequest);
         }
 
-        public async Task<string> Authenticate(AuthLoginRequest authLoginRequest)
+        public async Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest)
         {
             return await _authenticateAccountCommand.Invoke(authLoginRequest);
         }

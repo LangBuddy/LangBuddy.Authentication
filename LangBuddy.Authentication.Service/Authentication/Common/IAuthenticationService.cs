@@ -1,4 +1,5 @@
 ﻿using LangBuddy.Authentication.Models.Request;
+using LangBuddy.Authentication.Models.Response;
 
 namespace LangBuddy.Authentication.Service.Authentication.Common
 {
@@ -6,6 +7,6 @@ namespace LangBuddy.Authentication.Service.Authentication.Common
     {
         Task<HttpContent> Register(AuthRegisterRequest authCreateRequest);
 
-        Task<string> Authenticate(AuthLoginRequest authLoginRequest);
+        Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest);
     }
 }
