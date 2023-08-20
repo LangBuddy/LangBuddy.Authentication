@@ -1,7 +1,5 @@
 ﻿using LangBuddy.Authentication.Database;
 using LangBuddy.Authentication.Service.Authentication;
-using LangBuddy.Authentication.Service.Authentication.Commands;
-using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Http;
 using LangBuddy.Authentication.Service.Http.Common;
 using Microsoft.Extensions.Configuration;
@@ -15,17 +13,7 @@ namespace LangBuddy.Authentication.Service
         {
             services.AddDatabase(configuration);
             services.AddTransient<IHttpService, HttpService>();
-
-            services.AddTransient<ICreatePasswordHashCommand, CreatePasswordHashCommand>();
-            services.AddTransient<IVerifyPasswordHashCommand, VerifyPasswordHashCommand>();
-            services.AddTransient<ICreateJwtTokenCommand, CreateJwtTokenCommand>();
-            services.AddTransient<ICreateRefreshTokenCommand, CreateRefreshTokenCommand>();
-            services.AddTransient<IGetPrincipalFromExpiredTokenCommand, GetPrincipalFromExpiredTokenCommand>();
-            services.AddTransient<ICreateAccountCommand, CreateAccountCommand>();
-            services.AddTransient<IAuthenticateAccountCommand, AuthenticateAccountCommand>();
-            services.AddTransient<IRefreshTokenCommand, RefreshTokenCommand>();
-
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddAuthenticationService();
 
             return services;
         }
