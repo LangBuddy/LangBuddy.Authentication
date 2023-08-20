@@ -15,12 +15,15 @@ namespace LangBuddy.Authentication.Service
         {
             services.AddDatabase(configuration);
             services.AddTransient<IHttpService, HttpService>();
+
             services.AddTransient<ICreatePasswordHashCommand, CreatePasswordHashCommand>();
             services.AddTransient<IVerifyPasswordHashCommand, VerifyPasswordHashCommand>();
             services.AddTransient<ICreateJwtTokenCommand, CreateJwtTokenCommand>();
             services.AddTransient<ICreateRefreshTokenCommand, CreateRefreshTokenCommand>();
+            services.AddTransient<IGetPrincipalFromExpiredTokenCommand, GetPrincipalFromExpiredTokenCommand>();
             services.AddTransient<ICreateAccountCommand, CreateAccountCommand>();
             services.AddTransient<IAuthenticateAccountCommand, AuthenticateAccountCommand>();
+            services.AddTransient<IRefreshTokenCommand, RefreshTokenCommand>();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
 
