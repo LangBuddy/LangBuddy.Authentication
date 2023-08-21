@@ -1,5 +1,6 @@
 ﻿using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Service.Authentication.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LangBuddy.Authentication.Web.Controllers
@@ -33,6 +34,38 @@ namespace LangBuddy.Authentication.Web.Controllers
             try
             {
                 var res = await _authenticationService.Authenticate(authLoginRequest);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] TokenRefreshRequest tokenRefreshRequest)
+        {
+            var email = User.Identity.Name;
+            try
+            {
+                var res = await _authenticationService.RefreshToken(tokenRefreshRequest, email);
+                return Ok(res);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var email = User.Identity.Name;
+            try
+            {
+                var res = await _authenticationService.Logout(email);
                 return Ok(res);
             }
             catch (Exception ex)
