@@ -52,6 +52,7 @@ namespace LangBuddy.Authentication.Service.Authentication
             services.AddTransient<ICreateAccountCommand, CreateAccountCommand>();
             services.AddTransient<IAuthenticateAccountCommand, AuthenticateAccountCommand>();
             services.AddTransient<IRefreshTokenCommand, RefreshTokenCommand>();
+            services.AddTransient<IAccountLogoutCommand, AccountLogoutCommand>();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
 
