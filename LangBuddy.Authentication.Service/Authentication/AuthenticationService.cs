@@ -9,14 +9,17 @@ namespace LangBuddy.Authentication.Service.Authentication
         private readonly ICreateAccountCommand _createAccountCommand;
         private readonly IAuthenticateAccountCommand _authenticateAccountCommand;
         private readonly IRefreshTokenCommand _refreshTokenCommand;
+        private readonly IAccountLogoutCommand _accountLogoutCommand;
 
         public AuthenticationService(ICreateAccountCommand createAccountCommand,
             IAuthenticateAccountCommand authenticateAccountCommand,
-            IRefreshTokenCommand refreshTokenCommand)
+            IRefreshTokenCommand refreshTokenCommand,
+            IAccountLogoutCommand accountLogoutCommand)
         {
             _createAccountCommand = createAccountCommand;
             _authenticateAccountCommand = authenticateAccountCommand;
             _refreshTokenCommand = refreshTokenCommand;
+            _accountLogoutCommand = accountLogoutCommand;
         }
 
         public async Task<HttpContent> Register(AuthRegisterRequest authCreateRequest)
@@ -32,6 +35,11 @@ namespace LangBuddy.Authentication.Service.Authentication
         public async Task<AuthenticatedResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email)
         {
             return await _refreshTokenCommand.Invoke(tokenRefreshRequest, email);
+        }
+
+        public async Task<int> Logout(string email)
+        {
+            return await _accountLogoutCommand.Invoke(email);
         }
     }
 }
