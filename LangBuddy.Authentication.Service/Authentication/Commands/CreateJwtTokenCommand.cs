@@ -45,7 +45,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
                 Audience = _jwtConfiguration.AUDIENCE,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Email, accountEmail),
+                new Claim(ClaimTypes.Name, accountEmail),
                 new Claim(ClaimTypes.Hash, pasHash)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
