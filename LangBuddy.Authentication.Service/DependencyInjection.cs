@@ -13,7 +13,7 @@ namespace LangBuddy.Authentication.Service
         {
             services.AddDatabase(configuration);
             services.AddTransient<IHttpService, HttpService>();
-            services.AddAuthenticationService();
+            services.AddAuthenticationService(configuration);
 
             return services;
         }
