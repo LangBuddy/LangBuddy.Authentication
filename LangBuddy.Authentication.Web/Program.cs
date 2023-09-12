@@ -4,6 +4,18 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.Development.json");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllCors", config =>
+    {
+        config.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
 builder.Services.Configure<ApiConnections>(u => builder.Configuration.GetSection("ApiConnections").Bind(u));
 
 builder.Services.AddServices(builder.Configuration);
@@ -50,6 +62,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAllCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
