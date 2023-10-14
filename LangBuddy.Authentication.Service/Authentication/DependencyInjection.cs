@@ -44,15 +44,9 @@ namespace LangBuddy.Authentication.Service.Authentication
                 };
             });
 
-            services.AddTransient<ICreatePasswordHashCommand, CreatePasswordHashCommand>();
-            services.AddTransient<IVerifyPasswordHashCommand, VerifyPasswordHashCommand>();
             services.AddTransient<ICreateJwtTokenCommand, CreateJwtTokenCommand>();
             services.AddTransient<ICreateRefreshTokenCommand, CreateRefreshTokenCommand>();
             services.AddTransient<IGetPrincipalFromExpiredTokenCommand, GetPrincipalFromExpiredTokenCommand>();
-            services.AddTransient<ICreateAccountCommand, CreateAccountCommand>();
-            services.AddTransient<IAuthenticateAccountCommand, AuthenticateAccountCommand>();
-            services.AddTransient<IRefreshTokenCommand, RefreshTokenCommand>();
-            services.AddTransient<IAccountLogoutCommand, AccountLogoutCommand>();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
 

@@ -1,45 +1,39 @@
-﻿using LangBuddy.Authentication.Models.Request;
+﻿using LangBuddy.Authentication.Models.Commands;
+using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Service.Authentication.Common;
+using LangBuddy.Authentication.Service.Mappers;
+using MediatR;
 
 namespace LangBuddy.Authentication.Service.Authentication
 {
     public class AuthenticationService: IAuthenticationService
     {
-        private readonly ICreateAccountCommand _createAccountCommand;
-        private readonly IAuthenticateAccountCommand _authenticateAccountCommand;
-        private readonly IRefreshTokenCommand _refreshTokenCommand;
-        private readonly IAccountLogoutCommand _accountLogoutCommand;
+        private readonly IMediator _mediator;
 
-        public AuthenticationService(ICreateAccountCommand createAccountCommand,
-            IAuthenticateAccountCommand authenticateAccountCommand,
-            IRefreshTokenCommand refreshTokenCommand,
-            IAccountLogoutCommand accountLogoutCommand)
+        public AuthenticationService(IMediator mediator)
         {
-            _createAccountCommand = createAccountCommand;
-            _authenticateAccountCommand = authenticateAccountCommand;
-            _refreshTokenCommand = refreshTokenCommand;
-            _accountLogoutCommand = accountLogoutCommand;
+            _mediator = mediator;
         }
 
-        public async Task<HttpContent> Register(AuthRegisterRequest authCreateRequest)
+        public async Task Register(AuthRegisterRequest authCreateRequest)
         {
-            return await _createAccountCommand.Invoke(authCreateRequest);
+            await _mediator.Send(authCreateRequest.ToCommand());
         }
 
         public async Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest)
         {
-            return await _authenticateAccountCommand.Invoke(authLoginRequest);
+            return await _mediator.Send(authLoginRequest.ToCommand());
         }
 
         public async Task<AuthenticatedResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email)
         {
-            return await _refreshTokenCommand.Invoke(tokenRefreshRequest, email);
+            return await _mediator.Send(tokenRefreshRequest.ToCommand(email));
         }
 
-        public async Task<int> Logout(string email)
+        public async Task Logout(string email)
         {
-            return await _accountLogoutCommand.Invoke(email);
+            await _mediator.Send(new LogoutAccountCommand(email));
         }
     }
 }

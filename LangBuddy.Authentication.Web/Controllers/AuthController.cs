@@ -19,8 +19,8 @@ namespace LangBuddy.Authentication.Web.Controllers
         {
             try
             {
-                var res = await _authenticationService.Register(authCreateRequest);
-                return Ok(res);
+                await _authenticationService.Register(authCreateRequest);
+                return Ok();
             }
             catch(Exception ex)
             {
@@ -65,8 +65,8 @@ namespace LangBuddy.Authentication.Web.Controllers
             var email = User.Identity.Name;
             try
             {
-                var res = await _authenticationService.Logout(email);
-                return Ok(res);
+                await _authenticationService.Logout(email);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -1,20 +1,19 @@
 ﻿using LangBuddy.Authentication.Database;
-using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Service.Authentication.Common;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace LangBuddy.Authentication.Service.Authentication.Commands
 {
-    public class RefreshTokenCommand : IRefreshTokenCommand
+    public class RefreshTokenHandler : IRequestHandler<Models.Commands.RefreshTokenCommand, AuthenticatedResponse>
     {
         private readonly AuthenticationDbContext _authenticationDbContext;
         private readonly IGetPrincipalFromExpiredTokenCommand _getPrincipalFromExpiredTokenCommand;
         private readonly ICreateJwtTokenCommand _createJwtTokenCommand;
         private readonly ICreateRefreshTokenCommand _createRefreshTokenCommand;
 
-        public RefreshTokenCommand(AuthenticationDbContext authenticationDbContext,
+        public RefreshTokenHandler(AuthenticationDbContext authenticationDbContext,
             IGetPrincipalFromExpiredTokenCommand getPrincipalFromExpiredTokenCommand,
             ICreateJwtTokenCommand createJwtTokenCommand,
             ICreateRefreshTokenCommand createRefreshTokenCommand)
@@ -25,14 +24,14 @@ namespace LangBuddy.Authentication.Service.Authentication.Commands
             _createRefreshTokenCommand = createRefreshTokenCommand;
         }
 
-        public async Task<AuthenticatedResponse> Invoke(TokenRefreshRequest tokenRefreshRequest, string email)
+        public async Task<AuthenticatedResponse> Handle(Models.Commands.RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var principal = _getPrincipalFromExpiredTokenCommand.Invoke(tokenRefreshRequest.Token);
+            var principal = _getPrincipalFromExpiredTokenCommand.Invoke(request.Token);
             var user = await _authenticationDbContext.Authentications
-                .FirstOrDefaultAsync(x => x.Email == email);
+            .FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
 
             if (user is null
-                || user.RefreshToken != tokenRefreshRequest.RefreshToken
+                || user.RefreshToken != request.RefreshToken
                 || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                 throw new ArgumentException("Invalid client request");
 

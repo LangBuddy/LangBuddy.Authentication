@@ -20,7 +20,7 @@ namespace LangBuddy.Authentication.Service.Http
             _apiConnections = apiConnections.Value;
         }
 
-        public async Task<HttpContent> SendCreateAccountRequest(AccountCreateRequest accountCreateRequest)
+        public async Task<bool> SendCreateAccountRequest(AccountCreateRequest accountCreateRequest)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, _apiConnections.AccountsConnectionDefault);
 
@@ -30,7 +30,7 @@ namespace LangBuddy.Authentication.Service.Http
 
             var response = await _httpClient.SendAsync(request);
 
-            return response.Content;
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<AccountPasswordHashResponse?> SendGetAccountPasswordHashRequest(string email)

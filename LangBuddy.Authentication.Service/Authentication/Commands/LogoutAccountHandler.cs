@@ -1,26 +1,27 @@
 ﻿using LangBuddy.Authentication.Database;
-using LangBuddy.Authentication.Service.Authentication.Common;
+using LangBuddy.Authentication.Models.Commands;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LangBuddy.Authentication.Service.Authentication.Commands
 {
-    public class AccountLogoutCommand : IAccountLogoutCommand
+    public class LogoutAccountHandler : IRequestHandler<LogoutAccountCommand>
     {
         private readonly AuthenticationDbContext _authenticationDbContext;
 
-        public AccountLogoutCommand(AuthenticationDbContext authenticationDbContext)
+        public LogoutAccountHandler(AuthenticationDbContext authenticationDbContext)
         {
             _authenticationDbContext = authenticationDbContext;
         }
 
-        public async Task<int> Invoke(string email)
+        public async Task Handle(LogoutAccountCommand request, CancellationToken cancellationToken)
         {
             var authenticate = await _authenticationDbContext.Authentications
-                .FirstOrDefaultAsync(el => el.Email.Equals(email));
+                .FirstOrDefaultAsync(el => el.Email.Equals(request.Email));
 
             _authenticationDbContext.Remove(authenticate);
 
-            return await _authenticationDbContext.SaveChangesAsync();
+            await _authenticationDbContext.SaveChangesAsync();
         }
     }
 }
