@@ -1,15 +1,16 @@
 ﻿using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Models.Response;
+using LangBuddy.Authentication.Models.Responses;
 
 namespace LangBuddy.Authentication.Service.Authentication.Common
 {
     public interface IAuthenticationService
     {
-        Task Register(AuthRegisterRequest authCreateRequest);
+        Task<HttpResponse> Register(AuthRegisterRequest authCreateRequest);
 
-        Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest);
+        Task<HttpResponse> Authenticate(AuthLoginRequest authLoginRequest);
 
-        Task<AuthenticatedResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email);
+        Task<HttpResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email);
 
         Task Logout(string email);
     }

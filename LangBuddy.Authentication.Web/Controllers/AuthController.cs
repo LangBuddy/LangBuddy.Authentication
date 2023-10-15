@@ -19,12 +19,13 @@ namespace LangBuddy.Authentication.Web.Controllers
         {
             try
             {
-                await _authenticationService.Register(authCreateRequest);
-                return Ok();
+                var res = await _authenticationService.Register(authCreateRequest);
+                return Ok(res);
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Models.Responses.HttpResponse(false, $"Registration error. {ex.Message}", null));
+
             }
         }
 
@@ -38,7 +39,7 @@ namespace LangBuddy.Authentication.Web.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Models.Responses.HttpResponse(false, $"Authentication error. {ex.Message}", null));
             }
         }
 
@@ -54,7 +55,7 @@ namespace LangBuddy.Authentication.Web.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Models.Responses.HttpResponse(false, $"Refresh error. {ex.Message}", null));
             }
         }
 

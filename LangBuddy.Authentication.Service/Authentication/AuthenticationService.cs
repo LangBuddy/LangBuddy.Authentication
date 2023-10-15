@@ -1,6 +1,7 @@
 ﻿using LangBuddy.Authentication.Models.Commands;
 using LangBuddy.Authentication.Models.Request;
 using LangBuddy.Authentication.Models.Response;
+using LangBuddy.Authentication.Models.Responses;
 using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Mappers;
 using MediatR;
@@ -16,19 +17,25 @@ namespace LangBuddy.Authentication.Service.Authentication
             _mediator = mediator;
         }
 
-        public async Task Register(AuthRegisterRequest authCreateRequest)
+        public async Task<HttpResponse> Register(AuthRegisterRequest authCreateRequest)
         {
-            await _mediator.Send(authCreateRequest.ToCommand());
+            var res = await _mediator.Send(authCreateRequest.ToCommand());
+
+            return new HttpResponse(true, "Successful registration", res);
         }
 
-        public async Task<AuthenticatedResponse> Authenticate(AuthLoginRequest authLoginRequest)
+        public async Task<HttpResponse> Authenticate(AuthLoginRequest authLoginRequest)
         {
-            return await _mediator.Send(authLoginRequest.ToCommand());
+            var res = await _mediator.Send(authLoginRequest.ToCommand());
+
+            return new HttpResponse(true, "Successful authentication", res);
         }
 
-        public async Task<AuthenticatedResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email)
+        public async Task<HttpResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email)
         {
-            return await _mediator.Send(tokenRefreshRequest.ToCommand(email));
+            var res = await _mediator.Send(tokenRefreshRequest.ToCommand(email));
+
+            return new HttpResponse(true, "Successful Refresh Token", res);
         }
 
         public async Task Logout(string email)
