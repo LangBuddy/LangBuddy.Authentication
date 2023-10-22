@@ -51,7 +51,7 @@ namespace LangBuddy.Authentication.Service.Http
         public async Task<AccountPasswordHashResponse> SendGetAccountPasswordHashRequest(string email)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                $"{_apiConnections.AccountsConnectionDefaultPasswordHash}/{email}"    
+                $"{_apiConnections.AccountsConnectionDefault}/password/{email}"    
             );
 
             var response = await _httpClient.SendAsync(request);
@@ -70,6 +70,30 @@ namespace LangBuddy.Authentication.Service.Http
             }
 
             throw new Exception($"Error when receiving the password hash for email {email}. Error code: {response.StatusCode}");
+        }
+
+        public async Task<AccountGetByEmailResponse> SendGetAccountByEmail(string email)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+               $"{_apiConnections.AccountsConnectionDefault}/{email}"
+           );
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<HttpResponse>();
+
+                if (content.Success)
+                {
+                    var account = JsonConvert.DeserializeObject<AccountGetByEmailResponse>(content.Data.ToString());
+                    return account;
+                }
+
+                throw new Exception(content.Message);
+            }
+
+            throw new Exception($"Error when trying to get an account by email {email}. Error code: {response.StatusCode}");
         }
     }
 }

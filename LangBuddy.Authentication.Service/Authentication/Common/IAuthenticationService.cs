@@ -13,5 +13,7 @@ namespace LangBuddy.Authentication.Service.Authentication.Common
         Task<HttpResponse> RefreshToken(TokenRefreshRequest tokenRefreshRequest, string email);
 
         Task Logout(string email);
+
+        Task<HttpResponse> Profile(string email);
     }
 }

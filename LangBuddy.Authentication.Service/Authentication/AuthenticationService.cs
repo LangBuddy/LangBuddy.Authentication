@@ -1,6 +1,6 @@
 ﻿using LangBuddy.Authentication.Models.Commands;
+using LangBuddy.Authentication.Models.Queries;
 using LangBuddy.Authentication.Models.Request;
-using LangBuddy.Authentication.Models.Response;
 using LangBuddy.Authentication.Models.Responses;
 using LangBuddy.Authentication.Service.Authentication.Common;
 using LangBuddy.Authentication.Service.Mappers;
@@ -41,6 +41,13 @@ namespace LangBuddy.Authentication.Service.Authentication
         public async Task Logout(string email)
         {
             await _mediator.Send(new LogoutAccountCommand(email));
+        }
+
+        public async Task<HttpResponse> Profile(string email)
+        {
+            var res = await _mediator.Send(new GetAccountQuery(email));
+
+            return new HttpResponse(true, "Successful get account by email", res);
         }
     }
 }

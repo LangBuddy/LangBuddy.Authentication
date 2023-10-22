@@ -3,6 +3,5 @@
     public class ApiConnections
     {
         public string AccountsConnectionDefault { get; set; }
-        public string AccountsConnectionDefaultPasswordHash { get; set; }
     }
 }

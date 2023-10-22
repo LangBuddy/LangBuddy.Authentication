@@ -9,5 +9,7 @@ namespace LangBuddy.Authentication.Service.Http.Common
         Task<AccountCreatedResponse> SendCreateAccountRequest(AccountCreateRequest accountCreateRequest);
 
         Task<AccountPasswordHashResponse?> SendGetAccountPasswordHashRequest(string email);
+
+        Task<AccountGetByEmailResponse> SendGetAccountByEmail(string email);
     }
 }

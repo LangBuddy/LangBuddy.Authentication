@@ -74,5 +74,21 @@ namespace LangBuddy.Authentication.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var email = User.Identity.Name;
+            try
+            {
+                var res = await _authenticationService.Profile(email);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Models.Responses.HttpResponse(false, $"Error get account by email {email}. {ex.Message}", null));
+            }
+        }
     }
 }
